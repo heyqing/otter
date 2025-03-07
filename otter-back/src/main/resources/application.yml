@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: otter
+  profiles:
+    active: dev

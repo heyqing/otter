@@ -1,0 +1,41 @@
+server:
+  port: 6767
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 125MB
+      max-request-size: 125MB
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://xxxxxx:xxxx/xxxxxx?serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
+    password: xxxxxxxxxx
+    hikari:
+      minimum-idle: 10
+      idle-timeout: 180000
+      maximum-pool-size: 100
+      auto-commit: true
+      pool-name: MyHikariCP
+      max-lifetime: 60000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  redis:
+    host: xxxxxxxxx
+    port: 123456
+    password: xxxxxxxx
+    database: 0
+    lettuce:
+      pool:
+        min-idle: 10
+        max-idle: 100
+        max-active: 100
+        max-wait: 10000
+    timeout: 6000
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
