@@ -1,0 +1,58 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: otter
+  
+  # 数据库配置
+  datasource:
+    url: jdbc:postgresql://localhost:5432/otter
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  # Redis配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+
+# JWT配置
+jwt:
+  secret: your-secret-key-here-must-be-at-least-32-characters
+  expiration: 86400000 # 24小时
+
+# Web3配置
+web3:
+  provider: http://localhost:8545
+  network-id: 1
+
+# IPFS配置
+ipfs:
+  host: localhost
+  port: 5001
+
+# AI服务配置
+ai:
+  url: http://localhost:8000
+  api-key: your-api-key-here
+
+# Swagger配置
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true 
