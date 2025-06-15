@@ -1,6 +1,7 @@
 package top.heyqing.otter.service;
 
-import top.heyqing.otter.common.exception.MessagingException;
+
+import jakarta.mail.MessagingException;
 
 /**
  * 邮件服务接口

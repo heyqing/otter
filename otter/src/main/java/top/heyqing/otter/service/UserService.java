@@ -2,8 +2,11 @@ package top.heyqing.otter.service;
 
 import top.heyqing.otter.dto.*;
 import top.heyqing.otter.entity.UserActivityLog;
+import top.heyqing.otter.entity.User;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * 用户服务接口
@@ -109,4 +112,10 @@ public interface UserService {
      * @return 操作日志列表
      */
     List<UserActivityLog> getUserActivityLogs(Long userId, Integer page, Integer size);
+
+    User createUser(String walletAddress);
+    Optional<User> getUserById(UUID id);
+    Optional<User> getUserByWalletAddress(String walletAddress);
+    User updateUser(User user);
+    void deleteUser(UUID id);
 } 

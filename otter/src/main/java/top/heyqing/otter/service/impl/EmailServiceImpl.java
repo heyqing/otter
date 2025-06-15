@@ -1,11 +1,11 @@
 package top.heyqing.otter.service.impl;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import top.heyqing.otter.common.exception.MessagingException;
 import top.heyqing.otter.service.EmailService;
 
 import jakarta.mail.internet.MimeMessage;

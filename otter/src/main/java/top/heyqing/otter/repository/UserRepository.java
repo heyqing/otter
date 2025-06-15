@@ -2,7 +2,7 @@ package top.heyqing.otter.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import top.heyqing.otter.entity.User;
+import top.heyqing.otter.entity.UserEntity;
 
 import java.util.Optional;
 
@@ -10,7 +10,7 @@ import java.util.Optional;
  * 用户数据访问接口
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
     
     /**
      * 通过用户名查找用户
@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param username 用户名
      * @return 用户对象
      */
-    Optional<User> findByUsername(String username);
+    Optional<UserEntity> findByUsername(String username);
     
     /**
      * 通过邮箱查找用户
@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param email 邮箱
      * @return 用户对象
      */
-    Optional<User> findByEmail(String email);
+    Optional<UserEntity> findByEmail(String email);
     
     /**
      * 通过钱包地址查找用户
@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param walletAddress 钱包地址
      * @return 用户对象
      */
-    Optional<User> findByWalletAddress(String walletAddress);
+    Optional<UserEntity> findByWalletAddress(String walletAddress);
     
     /**
      * 检查用户名是否存在

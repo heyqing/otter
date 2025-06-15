@@ -2,14 +2,17 @@ package top.heyqing.otter.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import top.heyqing.otter.common.Result;
 import top.heyqing.otter.dto.*;
 import top.heyqing.otter.entity.UserActivityLog;
+import top.heyqing.otter.entity.User;
 import top.heyqing.otter.service.UserService;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 用户控制器
@@ -179,5 +182,45 @@ public class UserController {
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "20") Integer size) {
         return Result.success(userService.getUserActivityLogs(userId, page, size));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestParam String walletAddress) {
+        User user = userService.createUser(walletAddress);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/wallet/{walletAddress}")
+    public ResponseEntity<User> getUserByWalletAddress(@PathVariable String walletAddress) {
+        return userService.getUserByWalletAddress(walletAddress)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User user) {
+        return userService.getUserById(id)
+                .map(existingUser -> {
+                    user.setId(id);
+                    return ResponseEntity.ok(userService.updateUser(user));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+        return userService.getUserById(id)
+                .map(user -> {
+                    userService.deleteUser(id);
+                    return ResponseEntity.ok().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 } 

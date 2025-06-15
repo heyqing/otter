@@ -1,17 +1,12 @@
-server:
-  port: 8080
-  servlet:
-    context-path: /api
-
 spring:
   application:
     name: otter
 
   # 数据库配置
   datasource:
-    url: jdbc:postgresql://localhost:5432/otter
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://117.72.110.100:5432/otter
+    username: admin
+    password: post123ADMIN
     driver-class-name: org.postgresql.Driver
 
   # JPA配置
@@ -27,13 +22,34 @@ spring:
   # Redis配置
   data:
     redis:
-      host: localhost
+      host: 117.72.110.100
       port: 6379
-      database: 0
+      database: 4
+
+  # 邮件服务配置
+  mail:
+    host: smtp.163.com
+    port: 465
+    username: ${MAIL_USERNAME:heyqings@163.com}
+    password: ${MAIL_PASSWORD:HBhmtT8F3CZMNN4F}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # Thymeleaf配置
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML
 
 # JWT配置
 jwt:
-  secret: ${JWT_SECRET:your-jwt-secret-key}
+  secret: ${JWT_SECRET:2FsU#GykX19Zb3=u7wj$1+wG8%LpOaY3}
   expiration: 86400000 # 24小时
 
 # Web3配置
@@ -59,27 +75,7 @@ springdoc:
     path: /swagger-ui.html
     enabled: true
 
-# 邮件服务配置
-mail:
-  host: smtp.gmail.com
-  port: 587
-  username: ${MAIL_USERNAME:your-email@gmail.com}
-  password: ${MAIL_PASSWORD:your-app-password}
-  properties:
-    mail:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
-
-# Thymeleaf配置
-thymeleaf:
-  cache: false
-  prefix: classpath:/templates/
-  suffix: .html
-  encoding: UTF-8
-  mode: HTML
-
+# 日志配置
 logging:
   level:
     root: INFO

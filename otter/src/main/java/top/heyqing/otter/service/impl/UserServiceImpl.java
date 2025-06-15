@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.heyqing.otter.annotation.LogUserActivity;
 import top.heyqing.otter.blockchain.util.Web3Utils;
-import top.heyqing.otter.common.exception.BusinessException;
 import top.heyqing.otter.dto.*;
 import top.heyqing.otter.entity.*;
+import top.heyqing.otter.exception.BusinessException;
 import top.heyqing.otter.repository.*;
 import top.heyqing.otter.security.JwtTokenProvider;
 import top.heyqing.otter.service.EmailService;
@@ -22,6 +22,7 @@ import top.heyqing.otter.service.UserService;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -326,6 +327,41 @@ public class UserServiceImpl implements UserService {
             PageRequest.of(page, size)
         );
         return logs.getContent();
+    }
+    
+    @Override
+    @Transactional
+    public User createUser(String walletAddress) {
+        if (userRepository.existsByWalletAddress(walletAddress)) {
+            throw new RuntimeException("Wallet address already registered");
+        }
+        
+        User user = new User();
+        user.setWalletAddress(walletAddress);
+        user.setNickname("User_" + walletAddress.substring(0, 6));
+        return userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> getUserById(UUID id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public Optional<User> getUserByWalletAddress(String walletAddress) {
+        return userRepository.findByWalletAddress(walletAddress);
+    }
+
+    @Override
+    @Transactional
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(UUID id) {
+        userRepository.deleteById(id);
     }
     
     /**
