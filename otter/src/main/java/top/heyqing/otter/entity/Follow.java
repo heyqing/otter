@@ -1,4 +1,4 @@
-package top.heyqing.otter.user.entity;
+package top.heyqing.otter.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

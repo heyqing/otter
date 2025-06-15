@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.heyqing.otter.common.BaseEntity;
-import top.heyqing.otter.user.entity.User;
+import top.heyqing.otter.entity.User;
 
 @Data
 @Entity

@@ -7,6 +7,11 @@ CREATE TABLE users
     password_hash    VARCHAR(255) NOT NULL,
     bio              TEXT,
     avatar_ipfs_hash VARCHAR(255), -- 头像存IPFS哈希
+    wallet_address   VARCHAR(42)  NOT NULL UNIQUE,
+    is_verified      BOOLEAN      DEFAULT FALSE, -- 邮箱是否验证
+    is_banned        BOOLEAN      DEFAULT FALSE, -- 是否被封禁
+    ban_reason       TEXT,                       -- 封禁原因
+    ban_expires_at   TIMESTAMP WITH TIME ZONE,   -- 封禁过期时间
     created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -32,6 +37,53 @@ CREATE TABLE jwt_blacklist
 (
     token  VARCHAR(512) PRIMARY KEY,
     expiry TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+-- 密码重置令牌表
+CREATE TABLE password_reset_tokens
+(
+    id         BIGSERIAL PRIMARY KEY,
+    user_id    BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    token      VARCHAR(255) NOT NULL UNIQUE,
+    expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 邮箱验证令牌表
+CREATE TABLE email_verification_tokens
+(
+    id         BIGSERIAL PRIMARY KEY,
+    user_id    BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    token      VARCHAR(255) NOT NULL UNIQUE,
+    expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 用户操作日志表
+CREATE TABLE user_activity_logs
+(
+    id         BIGSERIAL PRIMARY KEY,
+    user_id    BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    action     VARCHAR(50) NOT NULL, -- 操作类型：LOGIN, LOGOUT, UPDATE_PROFILE, etc.
+    ip_address VARCHAR(45),          -- IPv4 or IPv6
+    user_agent TEXT,                 -- 浏览器信息
+    details    JSONB,                -- 详细操作信息
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 用户统计信息表
+CREATE TABLE user_statistics
+(
+    user_id           BIGINT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+    login_count       INTEGER DEFAULT 0,
+    post_count        INTEGER DEFAULT 0,
+    comment_count     INTEGER DEFAULT 0,
+    follower_count    INTEGER DEFAULT 0,
+    following_count   INTEGER DEFAULT 0,
+    last_login_at     TIMESTAMP WITH TIME ZONE,
+    last_activity_at  TIMESTAMP WITH TIME ZONE,
+    created_at        TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 帖子表（用户发布的内容）
